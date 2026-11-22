@@ -11,7 +11,7 @@ This is the pipeline, not a chatbot. Transcription and the LLM are two workers. 
 3. Re-run the same complete fixture. Same content hash → no new job.
 4. On `/ops`, **Break next DMS write**, then run a complete scenario. Worker retries; inject enough failures and it dead-letters.
 
-Phone capture is on `/` (presigned S3 PUT, proxy fallback). Live mic needs `GROQ_API_KEY` or `OPENAI_API_KEY`. Fixtures do not.
+Phone capture is on `/bay` (presigned S3 PUT, proxy fallback). Live mic needs `GROQ_API_KEY` or `OPENAI_API_KEY`. Fixtures do not. The landing page is `/`.
 
 ## Run
 
