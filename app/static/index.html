@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bay to ground truth · Bayworks demo</title>
+  <meta name="description" content="Independent data-infrastructure demo: technician voice and bay video become a validated OEM 3Cs warranty story, or they are blocked before they file." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="wordmark" href="/">
+        <svg width="18" height="20" viewBox="0 0 18 20" fill="none" aria-hidden="true">
+          <path d="M2 1.5h8.2c3.4 0 5.8 2.1 5.8 5.1 0 2.1-1.2 3.8-3.2 4.6 2.4.7 3.9 2.6 3.9 5.1 0 3.2-2.6 5.2-6.2 5.2H2V1.5Z" stroke="#F2F0EC" stroke-width="1.6"/>
+          <path d="M6.2 5.1h3.1c1.5 0 2.4.8 2.4 2s-.9 2-2.4 2H6.2V5.1Zm0 6.2h3.5c1.7 0 2.7.9 2.7 2.2s-1 2.2-2.7 2.2H6.2v-4.4Z" fill="#C9A96E"/>
+        </svg>
+        <span>Bayworks <em>demo</em></span>
+      </a>
+      <nav class="nav">
+        <a href="/bay">Service bay</a>
+        <a href="/ops">Ops</a>
+        <a class="cta" href="/bay">Open the bay</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-copy">
+      <h1>Intelligence that <span>runs vehicle repair</span></h1>
+      <p class="lede">A technician note in the bay becomes lineage-backed ground truth — or it is stopped before a warranty claim leaves the shop.</p>
+      <div class="hero-actions">
+        <a class="cta" href="/bay">Open the service bay
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="cta ghost" href="/ops">Ground-truth ops
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="kicker">Pipeline</p>
+    <h2>Voice and bay video in. A fileable 3Cs story out — only if the measurements exist.</h2>
+    <div class="steps-grid">
+      <article class="tile">
+        <div class="n">01</div>
+        <h3>Capture</h3>
+        <p>Device SHA-256, then a presigned S3 PUT. Prefix is rooftop / RO / hash. Same bytes never enqueue twice.</p>
+      </article>
+      <article class="tile">
+        <div class="n">02</div>
+        <h3>Transcribe · extract</h3>
+        <p>Workers claim jobs with FOR UPDATE SKIP LOCKED. Transcript and story versions are immutable rows.</p>
+      </article>
+      <article class="tile">
+        <div class="n">03</div>
+        <h3>Validate</h3>
+        <p>OEM rules, not the LLM. Missing pad, rotor, torque, DTC, or road-test miles → needs_followup.</p>
+      </article>
+      <article class="tile">
+        <div class="n">04</div>
+        <h3>DMS writeback</h3>
+        <p>Idempotency-Key, retries on 503, dead-letter after five. Ops can break the next write on purpose.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <p class="kicker">What to show</p>
+    <h2>Four beats in two minutes.</h2>
+    <div class="proof-grid">
+      <article class="tile">
+        <h3>Brake · complete</h3>
+        <p>Stages flip, a 3Cs story files, lineage shows s3://, SHA-256, prompt_version, validator_version.</p>
+      </article>
+      <article class="tile">
+        <h3>Missing measurements</h3>
+        <p>Status is needs_followup. The claim does not file. Fill pad / rotor / torque / miles and it files as story v2.</p>
+      </article>
+      <article class="tile">
+        <h3>Replay + DLQ</h3>
+        <p>Same hash is a no-op. Inject one DMS 503 to retry; inject five to dead-letter. Dummy MP4/MPS sit in the object store.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Independent demo for the Data Infrastructure Engineer role. Visual language inspired by bayworks.app — not the production product.</p>
+    <p>Postgres + S3-compatible object store · rooftop_id is the partition key</p>
+  </footer>
+</body>
+</html>

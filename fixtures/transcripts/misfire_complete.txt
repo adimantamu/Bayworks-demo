@@ -1,0 +1,1 @@
+Customer states check engine light is on and the car runs rough at idle. Pulled DTC P0301 cylinder 1 misfire. Swapped coil pack to cylinder 2, code followed to P0302. Replaced coil pack cylinder 1 part number 30520-5A2-A01. Cleared codes. Road tested 3 miles, P0301 did not return, misfire monitor ready, concern verified repaired.

@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloudflare tunnel for Bayworks demo
+After=network.target bayworks-app.service
+Requires=bayworks-app.service
+
+[Service]
+Type=simple
+User=ec2-user
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate --url http://127.0.0.1:8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

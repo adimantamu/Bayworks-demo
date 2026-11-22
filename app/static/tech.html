@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bayworks demo · Service bay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="wordmark" href="/">
+        <svg width="18" height="20" viewBox="0 0 18 20" fill="none" aria-hidden="true">
+          <path d="M2 1.5h8.2c3.4 0 5.8 2.1 5.8 5.1 0 2.1-1.2 3.8-3.2 4.6 2.4.7 3.9 2.6 3.9 5.1 0 3.2-2.6 5.2-6.2 5.2H2V1.5Z" stroke="#F2F0EC" stroke-width="1.6"/>
+          <path d="M6.2 5.1h3.1c1.5 0 2.4.8 2.4 2s-.9 2-2.4 2H6.2V5.1Zm0 6.2h3.5c1.7 0 2.7.9 2.7 2.2s-1 2.2-2.7 2.2H6.2v-4.4Z" fill="#C9A96E"/>
+        </svg>
+        <span>Bayworks <em>demo</em></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a class="active" href="/bay">Service bay</a>
+        <a href="/ops">Ops</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="shell">
+    <div class="page-head">
+      <div>
+        <p class="kicker">Capture</p>
+        <h1>Service bay</h1>
+        <p>Talk the 3Cs. The pipeline files only if warranty rules pass.</p>
+      </div>
+    </div>
+
+    <div id="flash" class="banner err" hidden></div>
+
+    <div class="grid two">
+      <section class="card">
+        <h2>Repair order</h2>
+        <p class="hint">Pulled from the mock DMS (CDK-shaped). Hash is computed on-device; ingest is idempotent on (rooftop_id, content_hash).</p>
+        <label for="rooftop">Rooftop (partition key)</label>
+        <input id="rooftop" value="keegan-honda" />
+        <label for="ro">RO number</label>
+        <select id="ro"></select>
+        <div class="row">
+          <div>
+            <label for="vin">VIN</label>
+            <input id="vin" class="mono" />
+          </div>
+          <div>
+            <label for="mileage">Mileage</label>
+            <input id="mileage" readonly />
+          </div>
+        </div>
+        <p class="hint" id="ro-meta"></p>
+
+        <button class="rec" id="rec" type="button">Tap to record cause + correction</button>
+        <div class="actions">
+          <label class="file-btn" style="margin:0">
+            Upload audio / text note
+            <input id="audio-file" type="file" accept="audio/*,text/plain" hidden />
+          </label>
+          <label class="file-btn" id="evidence-wrap" style="margin:0" title="Uploads bay video/photo via presigned S3 PUT and links metadata + keyframe to the active repair">
+            Attach bay video / photo
+            <input id="evidence-file" type="file" accept="video/*,image/*" hidden />
+          </label>
+        </div>
+        <p class="hint" id="rec-hint">SHA-256 on device → presigned S3 PUT (proxy fallback) → no duplicate job on the same hash.</p>
+
+        <h2 style="margin-top:22px">Fixture scenarios</h2>
+        <p class="hint">No mic or API key required. Click twice to verify content-hash idempotency.</p>
+        <div class="scenarios">
+          <button data-scenario="brake_complete" type="button">Brake · complete</button>
+          <button data-scenario="brake_incomplete" class="warn-btn" type="button">Brake · missing measurements</button>
+          <button data-scenario="misfire_complete" type="button">Misfire · complete</button>
+          <button data-scenario="misfire_incomplete" class="warn-btn" type="button">Misfire · missing DTC</button>
+          <button data-scenario="battery_complete" type="button">Battery · complete</button>
+        </div>
+      </section>
+
+      <section class="card" id="result">
+        <h2>Warranty story &amp; ground truth</h2>
+        <div id="empty" class="hint">Record a note or run a scenario. Status, structured measurements, and lineage land here.</div>
+        <div id="live" hidden>
+          <div id="dup" class="banner" hidden>Idempotent replay — same (rooftop_id, content_hash), no duplicate job enqueued.</div>
+          <div id="job-err" class="banner err" hidden></div>
+          <div class="steps" id="steps"></div>
+          <div id="status-line"></div>
+          <div class="kvs" id="lineage" style="margin-top:8px"></div>
+          <div id="questions"></div>
+          <h2 style="margin-top:16px">OEM 3Cs warranty story</h2>
+          <div class="story" id="story"></div>
+          <h2 style="margin-top:16px">Structured ground truth</h2>
+          <div id="facts" class="chips"></div>
+          <div id="evidence-section" hidden>
+            <h2 style="margin-top:16px">Linked bay video / photo evidence</h2>
+            <div id="evidence" class="evidence-list"></div>
+          </div>
+          <h2 style="margin-top:16px">Raw transcript</h2>
+          <div class="hint" id="transcript"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="/static/tech.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+[Unit]
+Description=MinIO S3-compatible object store
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+Environment=MINIO_ROOT_USER=bayworks
+Environment=MINIO_ROOT_PASSWORD=bayworksdemo1
+ExecStart=/usr/local/bin/minio server /home/ec2-user/minio-data --address 127.0.0.1:9000 --console-address 127.0.0.1:9001
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

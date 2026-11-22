@@ -1,0 +1,18 @@
+[Unit]
+Description=Bayworks demo API, worker, and mock DMS
+After=network.target postgresql.service s3.service
+Wants=postgresql.service s3.service
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/bayworks
+EnvironmentFile=/home/ec2-user/bayworks/.env
+Environment=PYTHONPATH=/home/ec2-user/bayworks
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/bin/sh /home/ec2-user/bayworks/scripts/ec2-native.sh
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

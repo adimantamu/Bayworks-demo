@@ -1,0 +1,1 @@
+Customer states slow crank, hard start in the morning. Midtronics conductance test 380 CCA, spec is 550 CCA, battery failed. Battery voltage 12.1 volts. Replaced battery with OEM and registered battery on the vehicle. Charging system 14.2 volts running. Engine cranks and starts normally.
